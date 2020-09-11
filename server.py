@@ -46,27 +46,40 @@ def echo_socket(ws):
 
 @sockets.route('/orientation')
 def echo_socket(ws):
-
+	global now
 	while True:
 		message = ws.receive()
 		# print(message)
 		data = float(message.split(",")[1])
-		# print(data)
-		if data<20 and data>0:
-			# print("left" , data//10)
-			car.car.left(2)
-		if data>20 and data<40:
-			car.car.left(1)
-			# car.car.left()
+		# if data<180 and data>10:
+		# 	# print("left" , data//10)
+		# 	if time.time()-now>1/2:
+		# 		if data<30:
+		# 			car.car.left()
+		# 		else:
+		# 			car.car.left()
+		# 			car.car.left()
+		# 		now = time.time()
 
-		elif data>100 and data<145:
-			# print("right" , (360-data)//10)
-			# if time.time()-now>1/5:
-				# if data//10==2:
-			car.car.right(2)
-		elif data>145 and data<200:
-			car.car.right(3)
-			# car.car.right()
+
+		# elif data>180 and data<350:
+
+		# 	if time.time()-now>1/2:
+		# 		if data>330:
+		# 			car.car.right()
+		# 		else:
+		# 			car.car.right()
+		# 			car.car.right()
+		# 		now = time.time()
+
+		#############
+		if data<15 or data>345:
+			car.car.middle()
+		elif data>15 and data<180:
+			car.car.left()
+		elif data<345 and data>180:
+			car.car.right()
+		#############
 
 
 
