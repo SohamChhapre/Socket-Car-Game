@@ -14,8 +14,8 @@ class Stone():
 	def __init__(self,width,height):
 		self.width = width
 		self.height = height
-		self.y_speed = 0.1
-		self.init_speed = 0.1
+		self.y_speed = 1
+		self.init_speed = 0.3
 		self.rad = 10
 		self.color_dict = {0: (255,0,0),1:(0,255,0) }# red , green
 
@@ -37,10 +37,10 @@ class Stone():
 		self.good  = randint(0,1)
 		self.count+=1
 
-	def update(self):
+	def update(self,dt):
 		self.y_pos += self.y_speed
 		# if self.count==5:
-		self.y_speed = self.init_speed + score.score*0.001
+		self.y_speed = (self.init_speed + score.score*0.001)*dt
 		self.count=0
 
 		if self.height-self.y_pos<5:
@@ -112,13 +112,14 @@ def game():
 
 
 	while True:
+		dt = fpsClock.tick(FPS)
 		DISPLAYSURF.fill(WHITE)
 		car.car.draw(pygame,DISPLAYSURF)
 		if stone_count<level and (not(stones) or stones[-1].y_pos>(height/level)):
 			stones.append(Stone(width,height))
 			stone_count+=1
 		for s in stones:
-			s.update()
+			s.update(dt)
 			s.draw(pygame,DISPLAYSURF)
 
 
@@ -126,7 +127,7 @@ def game():
 		score.draw(pygame,DISPLAYSURF)
 		endgame=False
 		for stone in stones:
-			if car.car.position == stone.position and abs(car.car.y_pos-stone.y_pos)<1:
+			if car.car.position == stone.position and abs(car.car.y_pos-stone.y_pos)<10:
 				if stone.good==0:
 					score.text(str(score.score)+"  GAME ENDS")
 					score.draw(pygame,DISPLAYSURF)
@@ -142,6 +143,7 @@ def game():
 		if endgame==True:
 			break
 		pygame.display.update()
+		fpsClock.tick(FPS)
 
 if __name__ == "__main__": 
 
@@ -149,6 +151,8 @@ if __name__ == "__main__":
 
 	print(1)
 	pygame.init()
+	FPS = 30
+	fpsClock = pygame.time.Clock()
 
 	width = 300
 	height = 600
