@@ -10,6 +10,8 @@ import car
 import time
 
 
+
+
 class Stone():
 	def __init__(self,width,height):
 		self.width = width
